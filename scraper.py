@@ -7,8 +7,6 @@ import base64
 import json
 
 app = Flask(__name__)
-oauth = None
-token = None
 
 
 def km_to_coordinate(km):
@@ -104,20 +102,21 @@ def image():
              ('B07', 'B08', 'B09'),
              ('B11', 'B12', 'B8A'))
 
-    ind = 0
     images_content = []
     for bandGroup in bands:
-        json_data_copy = json_data.copy()
-        json_data_copy['evalscript'] = json_data_copy['evalscript'].replace('#B1#', bandGroup[0])
-        json_data_copy['evalscript'] = json_data_copy['evalscript'].replace('#B2#', bandGroup[1])
-        json_data_copy['evalscript'] = json_data_copy['evalscript'].replace('#B3#', bandGroup[2])
+        json_data_copy = replace_bands(bandGroup, json_data)
         response = oauth.post('https://services.sentinel-hub.com/api/v1/process', json=json_data_copy)
-        img = Image.open(BytesIO(response.content))
-        img.save('image'+str(ind)+'.png')
-        ind += 1
         base64_data = base64.b64encode(response.content).decode('utf-8')
         images_content.append(base64_data)
     return {'images': images_content}
+
+
+def replace_bands(band_group, json_data):
+    json_data_copy = json_data.copy()
+    json_data_copy['evalscript'] = json_data_copy['evalscript'].replace('#B1#', band_group[0])
+    json_data_copy['evalscript'] = json_data_copy['evalscript'].replace('#B2#', band_group[1])
+    json_data_copy['evalscript'] = json_data_copy['evalscript'].replace('#B3#', band_group[2])
+    return json_data_copy
 
 
 def authenticate():
