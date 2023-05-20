@@ -26,17 +26,17 @@ def build_rectangle(latitude, longitude, length_km, width_km):
     return top_left, bottom_right
 
 
-@app.route('/image', methods=['GET', 'POST'])
-def image():
+@app.route('/get_images', methods=['POST'])
+def get_images():
     # Get the x and y coordinates from the request data
-    # x = int(request.form.get('x', 0))
-    # y = int(request.form.get('y', 0))
-    # length = int(request.form.get('length', 0))
-    # width = int(request.form.get('width', 0))
-    x = 137.029836
-    y = 50.559578
-    length = 5
-    width = 5
+    x = float(request.form.get('x', 0))
+    y = float(request.form.get('y', 0))
+    length = int(request.form.get('length', 0))
+    width = int(request.form.get('width', 0))
+    # x = 137.029836
+    # y = 50.559578
+    # length = 5
+    # width = 5
 
     bbox = build_rectangle(x, y, length, width)
     json_data = {
