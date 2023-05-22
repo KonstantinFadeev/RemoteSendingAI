@@ -33,6 +33,8 @@ def get_images():
     y = float(request.form.get('y', 0))
     length = int(request.form.get('length', 0))
     width = int(request.form.get('width', 0))
+    date_from = str(request.form.get('date_from', ''))
+    date_to = str(request.form.get('date_to', ''))
     # x = 137.029836
     # y = 50.559578
     # length = 5
@@ -52,8 +54,8 @@ def get_images():
                       "data": [{
                           "dataFilter": {
                               "timeRange": {
-                                  "from": "2023-04-20T00:00:00Z",
-                                  "to": "2023-05-20T23:59:59Z"
+                                  "from": date_from,
+                                  "to": date_to
                               },
                               "maxCloudCoverage": 10
                           },
@@ -108,6 +110,7 @@ def get_images():
         response = oauth.post('https://services.sentinel-hub.com/api/v1/process', json=json_data_copy)
         base64_data = base64.b64encode(response.content).decode('utf-8')
         images_content.append(base64_data)
+
     return {'images': images_content}
 
 
