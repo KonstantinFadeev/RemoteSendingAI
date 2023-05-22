@@ -1,9 +1,9 @@
 PATH_TO_MODELS = ["path_to_base_model.pickle", "path_to_wather_model.pickle", "path_to_plant_model.pickle"]
 
 FEATURES = {
-    "base_model": ["Red", "IR8"],
-    "model_water": ["Red", "IR8"],
-    "model_plant": ["Red", "IR8"],
+    "base_model": ["base_model_features"],
+    "model_water": ["wather_model_features"],
+    "model_plant": ["plant_model_features"],
 }
 
 INT_TO_CLASS = {
